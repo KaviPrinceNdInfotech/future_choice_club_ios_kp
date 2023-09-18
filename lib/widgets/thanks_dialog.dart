@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:future_choice_test_flutter/utils/datasource.dart';
+
 class ThanksDialog extends StatelessWidget {
   final BuildContext mcontext;
-  ThanksDialog( this.mcontext);
+  ThanksDialog(this.mcontext);
 
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(4)
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
       child: Stack(
+        clipBehavior: Clip.none,
         alignment: Alignment.topCenter,
-      overflow: Overflow.visible,
         children: [
           Container(
             height: 300,
@@ -24,38 +23,41 @@ class ThanksDialog extends StatelessWidget {
                 SizedBox(
                   height: 30,
                 ),
-
-                Text('Dear member your booking request is forwarded to concerned department and you will get updated soon at your registered number or \n mail Id. \n Feel free to contact our customer care at 9654282869 for any assistance',
-                  style: TextStyle(
-                  color: Colors.grey[600],
-                  fontSize: 13
+                Text(
+                  'Dear member your booking request is forwarded to concerned department and you will get updated soon at your registered number or \n mail Id. \n Feel free to contact our customer care at 9654282869 for any assistance',
+                  style: TextStyle(color: Colors.grey[600], fontSize: 13),
+                  textAlign: TextAlign.center,
                 ),
-                textAlign: TextAlign.center,),
                 Expanded(
                   child: Align(
                     alignment: Alignment.bottomCenter,
                     child: GestureDetector(
-                      onTap: (){
-                        Navigator.of(context)
-                            .pop();
+                      onTap: () {
+                        Navigator.of(context).pop();
                         Navigator.of(mcontext).pop();
                       },
                       child: Container(
-                        width: 180,
+                          width: 180,
                           height: 45,
                           color: primaryColor,
                           child: Align(
                               alignment: Alignment.center,
-                              child: Text('Thank You',style: TextStyle(color: Colors.white),textAlign: TextAlign.center,))),
+                              child: Text(
+                                'Thank You',
+                                style: TextStyle(color: Colors.white),
+                                textAlign: TextAlign.center,
+                              ))),
                     ),
                   ),
                 ),
               ],
             ),
           ),
-          Positioned(child:
-          Image.asset('images/tick.png'),width: 60,height: 60,
-          top: -30,
+          Positioned(
+            child: Image.asset('images/tick.png'),
+            width: 60,
+            height: 60,
+            top: -30,
           )
         ],
       ),

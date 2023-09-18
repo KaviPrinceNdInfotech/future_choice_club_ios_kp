@@ -2,17 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:future_choice_test_flutter/utils/datasource.dart';
-class VacationListItem extends StatelessWidget {
 
+class VacationListItem extends StatelessWidget {
   final int index;
   final String dateString;
   final int tenure;
   final int days;
   final int nights;
 
-  const VacationListItem(this.index,this.dateString, this.tenure, this.days, this.nights);
-
-
+  const VacationListItem(
+      this.index, this.dateString, this.tenure, this.days, this.nights);
 
   @override
   Widget build(BuildContext context) {
@@ -27,92 +26,133 @@ class VacationListItem extends StatelessWidget {
           children: <Widget>[
             Stack(
               children: [
-                Image.asset('images/price_tag.png',height: 30,width: 55,),
+                Image.asset(
+                  'images/price_tag.png',
+                  height: 30,
+                  width: 55,
+                ),
                 Positioned(
-                    top: 8,
-                    left: 22,
-                    child: Text((index+1).toString(),style: TextStyle(fontSize: 10),),)
+                  top: 8,
+                  left: 22,
+                  child: Text(
+                    (index + 1).toString(),
+                    style: TextStyle(fontSize: 10),
+                  ),
+                )
               ],
             ),
             Container(
               margin: EdgeInsets.all(5),
               padding: EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                border: Border.all(color:primaryColor)
-              ),
+              decoration:
+                  BoxDecoration(border: Border.all(color: primaryColor)),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(getDateInString(0),style: TextStyle(fontSize: 13),),
-                  Text((int.parse(getDateInString(2))+index).toString(),style: TextStyle(fontSize: 13)),
-                  Text(getDateInString(1),style: TextStyle(fontSize: 13))
+                  Text(
+                    getDateInString(0),
+                    style: TextStyle(fontSize: 13),
+                  ),
+                  Text((int.parse(getDateInString(2)) + index).toString(),
+                      style: TextStyle(fontSize: 13)),
+                  Text(getDateInString(1), style: TextStyle(fontSize: 13))
                 ],
               ),
             ),
-            Image.asset('images/arrow_final.png',width: 60,height: 40,color: primaryColor,)
-            ,
+            Image.asset(
+              'images/arrow_final.png',
+              width: 60,
+              height: 40,
+              color: primaryColor,
+            ),
             Container(
               margin: EdgeInsets.all(5),
               padding: EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                  border: Border.all(color:primaryColor)
-              ),
+              decoration:
+                  BoxDecoration(border: Border.all(color: primaryColor)),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(getDateInString(0),style: TextStyle(fontSize: 13),),
-                  Text((int.parse(getDateInString(2))+1+index).toString(),style: TextStyle(fontSize: 13)),
-                  Text(getDateInString(1),style: TextStyle(fontSize: 13))
+                  Text(
+                    getDateInString(0),
+                    style: TextStyle(fontSize: 13),
+                  ),
+                  Text((int.parse(getDateInString(2)) + 1 + index).toString(),
+                      style: TextStyle(fontSize: 13)),
+                  Text(getDateInString(1), style: TextStyle(fontSize: 13))
                 ],
               ),
             ),
-            Text((() {
-              if((int.parse(getDateInString(2))+index)==getCurrentYear()){
-                return '$nights Night \n and \n $days Days';
-              }else{
-                return '6 Night \n and \n 7 Days';
-              }
-            }()),textAlign: TextAlign.center,style: TextStyle(
-              fontSize: 13
-            ),),
+            Text(
+              (() {
+                if ((int.parse(getDateInString(2)) + index) ==
+                    getCurrentYear()) {
+                  return '$nights Night \n and \n $days Days';
+                } else {
+                  return '6 Night \n and \n 7 Days';
+                }
+              }()),
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 13),
+            ),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Stack(
                   children: [
                     GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         Navigator.pushNamed(context, '/book_holiday');
                       },
                       child: Visibility(
-                          visible: (int.parse(getDateInString(2))+index)==getCurrentYear()
-                          ,child: Image.asset('images/play.png',width: 50,height: 25,color: primaryColor,)),
+                          visible:
+                              (int.parse(getDateInString(2)) + index + 1) ==
+                                  getCurrentYear(),
+                          child: Image.asset(
+                            'images/play.png',
+                            width: 50,
+                            height: 25,
+                            color: primaryColor,
+                          )),
                     ),
                     GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         Navigator.pushNamed(context, '/feedback_screen');
                       },
                       child: Visibility(
-                          visible: (int.parse(getDateInString(2))+index)<getCurrentYear(),
-                          child: Image.asset('images/feedback.png',width: 50,height: 25,)),
+                          visible: (int.parse(getDateInString(2)) + index + 1) <
+                              getCurrentYear(),
+                          child: Image.asset(
+                            'images/feedback.png',
+                            width: 50,
+                            height: 25,
+                          )),
                     ),
-                   Visibility(
-                       visible: (int.parse(getDateInString(2))+index)>getCurrentYear(),
-                       child: Icon(Icons.event_available,size: 30,color: primaryColor,)),
+                    Visibility(
+                        visible: (int.parse(getDateInString(2)) + index + 1) >
+                            getCurrentYear(),
+                        child: Icon(
+                          Icons.event_available,
+                          size: 30,
+                          color: primaryColor,
+                        )),
                   ],
                 ),
-                Text(((){
-                  if((int.parse(getDateInString(2))+index)==getCurrentYear()){
-                    return 'Book now';
-                  }else if((int.parse(getDateInString(2))+index)<getCurrentYear()){
-                    return 'Feedback';
-                  }else if((int.parse(getDateInString(2))+index)>getCurrentYear()){
-                    return 'Available';
-                  }
-
-                }())
-
-    ,style: TextStyle(fontSize: 10,color: Colors.grey[500]),)
+                Text(
+                  (() {
+                    if ((int.parse(getDateInString(2)) + index + 1) ==
+                        getCurrentYear()) {
+                      return 'Book now';
+                    } else if ((int.parse(getDateInString(2)) + index + 1) <
+                        getCurrentYear()) {
+                      return 'Feedback';
+                    } else if ((int.parse(getDateInString(2)) + index + 1) >
+                        getCurrentYear()) {
+                      return 'Available';
+                    }
+                  }()),
+                  style: TextStyle(fontSize: 10, color: Colors.grey[500]),
+                )
               ],
             )
           ],
@@ -121,15 +161,13 @@ class VacationListItem extends StatelessWidget {
     );
   }
 
-String getDateInString(int index){
-  return dateString.split(' ')[index];
-}
+  String getDateInString(int index) {
+    return dateString.split(' ')[index];
+  }
 
-int getCurrentYear(){
-    var currentDate=DateTime.now();
+  int getCurrentYear() {
+    var currentDate = DateTime.now();
     //print(currentDate.year);
     return currentDate.year;
-}
-
-
+  }
 }

@@ -29,7 +29,7 @@ SizedBox(height: 10,),
             SizedBox(height: 20,),
             GestureDetector(
                 onTap: (){
-                  urlLauncher.launch('tel://9411706334');
+                  urlLauncher.launch('tel://1234567890');
                 },
                 child: Image.asset('images/call_now.png',height: 50,width: 200,))
           ],

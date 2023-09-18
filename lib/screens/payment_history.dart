@@ -1,0 +1,190 @@
+import 'dart:convert';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../utils/datasource.dart';
+
+class PaymentHistory extends StatefulWidget {
+  @override
+  _PaymentHistoryState createState() => _PaymentHistoryState();
+}
+
+class _PaymentHistoryState extends State<PaymentHistory> {
+  int userId;
+  List dataFinal;
+  bool isLoading = true;
+
+  void getPaymentHistory() async {
+    var endPointUrl = "https://fcclub.co.in/api/UserEmi/PaymentDetail";
+    Map<String, String> queryParameters = {"Id": userId.toString()};
+
+    String queryString = Uri(queryParameters: queryParameters).query;
+    var requestUrl = endPointUrl + "?" + queryString;
+    http.Response response = await http.get(requestUrl);
+    if (response.statusCode == 200) {
+      setState(() {
+        dataFinal = json.decode(response.body);
+        isLoading = false;
+      });
+    } else {
+      showToast("No data found");
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
+        title: Text(
+          'Payment History',
+          style: TextStyle(color: Colors.white, fontSize: 16),
+        ),
+      ),
+      body: dataFinal == null
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : Container(
+              width: double.infinity,
+              child: Card(
+                margin: EdgeInsets.all(5),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                        margin: EdgeInsets.all(10),
+                        child: Text(
+                          'Payment Details',
+                          style: TextStyle(color: primaryColor),
+                        )),
+                    Divider(
+                      color: Colors.grey[400],
+                      thickness: .5,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                            flex: 1,
+                            child: Container(
+                                padding: EdgeInsets.only(left: 5),
+                                child: Text('Amount'))),
+                        Expanded(
+                            flex: 1,
+                            child: Text(
+                                dataFinal[0]['Amount'].toString() + " ₹",
+                                style: TextStyle(color: Colors.grey[500])))
+                      ],
+                    ),
+                    Divider(
+                      color: Colors.grey[400],
+                      thickness: .5,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                            flex: 1,
+                            child: Container(
+                                padding: EdgeInsets.only(left: 5),
+                                child: Text('Initial Payment'))),
+                        Expanded(
+                            flex: 1,
+                            child: Text(
+                                dataFinal[0]['InitialPayment'].toString() +
+                                    " ₹",
+                                style: TextStyle(color: Colors.grey[500])))
+                      ],
+                    ),
+                    Divider(
+                      color: Colors.grey[400],
+                      thickness: .5,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                            flex: 1,
+                            child: Container(
+                                padding: EdgeInsets.only(left: 5),
+                                child: Text('Total EMI'))),
+                        Expanded(
+                            flex: 1,
+                            child: Text(
+                                dataFinal[0]['TotalEMI'].toString() + " ₹",
+                                style: TextStyle(color: Colors.grey[500])))
+                      ],
+                    ),
+                    Divider(
+                      color: Colors.grey[400],
+                      thickness: .5,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                            flex: 1,
+                            child: Container(
+                                padding: EdgeInsets.only(left: 5),
+                                child: Text('Total Pay'))),
+                        Expanded(
+                            flex: 1,
+                            child: Text(
+                                dataFinal[0]['TotalPay'].toString() + " ₹",
+                                style: TextStyle(color: Colors.grey[500])))
+                      ],
+                    ),
+                    Divider(
+                      color: Colors.grey[400],
+                      thickness: .5,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                            flex: 1,
+                            child: Container(
+                                padding: EdgeInsets.only(left: 5),
+                                child: Text('Balance'))),
+                        Expanded(
+                            flex: 1,
+                            child: Text(
+                              dataFinal[0]['Balance'].toString() + " ₹",
+                              style: TextStyle(color: Colors.grey[500]),
+                            ))
+                      ],
+                    ),
+                    Divider(
+                      color: Colors.grey[400],
+                      thickness: .5,
+                    )
+                  ],
+                ),
+              ),
+            ),
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getUserId();
+  }
+
+  void getUserId() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    setState(() {
+      userId = sharedPreferences.getInt("userId");
+    });
+
+    getPaymentHistory();
+  }
+
+  void showToast(String message) {
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1);
+  }
+}
