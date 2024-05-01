@@ -38,13 +38,16 @@ class _VoucherRegisterPageState extends State<VoucherRegisterPage> {
   TextEditingController _textIssuedByController = TextEditingController();
   TextEditingController dateCtl = TextEditingController();
   var _currencies = [
-    "Jaipur",
-    "Agra",
-    "Jimcorbett",
     "Goa",
-    "Bangkok",
+    "Kerala",
+    "Ooty",
+    "Jaisalmer",
+    "Manali",
+    "Bankok",
+    "Bali",
+    "Vietnam",
+    "Srilanka",
     "Nepal",
-    "Bhutan",
   ];
 
   void loginUser(String name, String phone, String email, String preLoc1,

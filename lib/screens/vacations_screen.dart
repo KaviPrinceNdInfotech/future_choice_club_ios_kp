@@ -50,6 +50,7 @@ class _VacationsScreenState extends State<VacationsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blue,
       appBar: AppBar(
         backgroundColor: primaryColor,
         iconTheme: IconThemeData(color: Colors.white),

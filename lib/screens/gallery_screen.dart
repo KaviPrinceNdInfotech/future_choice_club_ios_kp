@@ -48,15 +48,26 @@ class _GalleryScreenState extends State<GalleryScreen> {
           : ListView.builder(
               itemCount: _listImages.length,
               itemBuilder: (context, index) {
-                return Container(
-                  alignment: Alignment.center,
-                  width: double.infinity,
-                  height: 400,
-                  child: Image.network(
-                    IMAGE_BASE_URL + _listImages[index]['ImageName'],
+                return Padding(
+                  padding: const EdgeInsets.all(1.0),
+                  child: Container(
+                    alignment: Alignment.center,
                     width: double.infinity,
-                    height: 400,
-                    fit: BoxFit.cover,
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    // decoration: ,
+                    //height: 400,
+                    child: Padding(
+                      padding: const EdgeInsets.all(1.0),
+                      child: Image.network(
+                        IMAGE_BASE_URL + _listImages[index]['ImageName'],
+                        width: double.infinity,
+                        //height: 400,
+                        fit: BoxFit.fill,
+                      ),
+                    ),
                   ),
                 );
               }),

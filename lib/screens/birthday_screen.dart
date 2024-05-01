@@ -38,7 +38,9 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
+          backgroundColor: primaryColor,
           title: Text(
             'Birthdays',
             style: TextStyle(color: Colors.white, fontSize: 16),
@@ -54,15 +56,18 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
             : ListView.builder(
                 itemCount: _listImages.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    alignment: Alignment.center,
-                    width: double.infinity,
-                    height: 400,
-                    child: Image.network(
-                      IMAGE_BASE_URL + _listImages[index]['ImageDest'],
+                  return Padding(
+                    padding: const EdgeInsets.all(1.0),
+                    child: Container(
+                      alignment: Alignment.center,
                       width: double.infinity,
                       height: 400,
-                      fit: BoxFit.cover,
+                      child: Image.network(
+                        IMAGE_BASE_URL + _listImages[index]['ImageDest'],
+                        width: double.infinity,
+                        height: 400,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   );
                 },

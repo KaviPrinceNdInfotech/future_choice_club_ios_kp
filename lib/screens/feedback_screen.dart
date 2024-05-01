@@ -55,6 +55,7 @@ class _FeedBackScreenState extends State<FeedBackScreen> {
     return Scaffold(
       key: _scaffoldkey,
       appBar: AppBar(
+        backgroundColor: primaryColor,
         title: Text(
           'Provide Feedback',
           style: TextStyle(fontSize: 16, color: Colors.white),

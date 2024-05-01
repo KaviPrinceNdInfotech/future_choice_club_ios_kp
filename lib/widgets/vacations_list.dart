@@ -54,8 +54,13 @@ class VacationListItem extends StatelessWidget {
                     style: TextStyle(fontSize: 13),
                   ),
                   Text((int.parse(getDateInString(2)) + index).toString(),
-                      style: TextStyle(fontSize: 13)),
-                  Text(getDateInString(1), style: TextStyle(fontSize: 13))
+                      style: TextStyle(fontSize: 13, color: Colors.black)),
+                  Text(getDateInString(1).toString(),
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Colors.black,
+                        //fontWeight: FontWeight.bold
+                      )),
                 ],
               ),
             ),
@@ -134,7 +139,7 @@ class VacationListItem extends StatelessWidget {
                         child: Icon(
                           Icons.event_available,
                           size: 30,
-                          color: primaryColor,
+                          color: Colors.green,
                         )),
                   ],
                 ),
@@ -151,7 +156,22 @@ class VacationListItem extends StatelessWidget {
                       return 'Available';
                     }
                   }()),
-                  style: TextStyle(fontSize: 10, color: Colors.grey[500]),
+                  style: TextStyle(
+                      fontSize: 10,
+                      color: (() {
+                        if ((int.parse(getDateInString(2)) + index + 1) ==
+                            getCurrentYear()) {
+                          return Colors
+                              .yellow.shade900; // Change color for 'Book now'
+                        } else if ((int.parse(getDateInString(2)) + index + 1) <
+                            getCurrentYear()) {
+                          return Colors.blue; // Change color for 'Feedback'
+                        } else if ((int.parse(getDateInString(2)) + index + 1) >
+                            getCurrentYear()) {
+                          return Colors.green; // Change color for 'Available'
+                        }
+                      }()),
+                      fontWeight: FontWeight.bold),
                 )
               ],
             )
@@ -161,7 +181,12 @@ class VacationListItem extends StatelessWidget {
     );
   }
 
+  //
+  // String getDateInString(int index) {
+  //   return dateString.split(" ")[index];
+  // }
   String getDateInString(int index) {
+    //List<String> dateParts = dateString.split(' ');
     return dateString.split(' ')[index];
   }
 

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -38,7 +39,9 @@ class _PaymentHistoryState extends State<PaymentHistory> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blue,
       appBar: AppBar(
+        backgroundColor: primaryColor,
         iconTheme: IconThemeData(color: Colors.white),
         title: Text(
           'Payment History',
@@ -50,7 +53,9 @@ class _PaymentHistoryState extends State<PaymentHistory> {
               child: CircularProgressIndicator(),
             )
           : Container(
+              color: Colors.blue.shade900,
               width: double.infinity,
+              height: double.infinity,
               child: Card(
                 margin: EdgeInsets.all(5),
                 child: Column(
@@ -59,8 +64,11 @@ class _PaymentHistoryState extends State<PaymentHistory> {
                     Container(
                         margin: EdgeInsets.all(10),
                         child: Text(
-                          'Payment Details',
-                          style: TextStyle(color: primaryColor),
+                          'Payment Details :',
+                          style: GoogleFonts.roboto(
+                              fontSize: 18,
+                              color: Colors.blueAccent,
+                              fontWeight: FontWeight.bold),
                         )),
                     Divider(
                       color: Colors.grey[400],
@@ -76,8 +84,8 @@ class _PaymentHistoryState extends State<PaymentHistory> {
                         Expanded(
                             flex: 1,
                             child: Text(
-                                dataFinal[0]['Amount'].toString() + " ₹",
-                                style: TextStyle(color: Colors.grey[500])))
+                                "₹ ${dataFinal[0]['Amount'].toString()}",
+                                style: TextStyle(color: Colors.orange[700])))
                       ],
                     ),
                     Divider(
@@ -93,10 +101,11 @@ class _PaymentHistoryState extends State<PaymentHistory> {
                                 child: Text('Initial Payment'))),
                         Expanded(
                             flex: 1,
+                            //"₹ ${dataFinal[0]['Amount'].toString()}",
+                            //                                 style: TextStyle(color: Colors.orange[700])))
                             child: Text(
-                                dataFinal[0]['InitialPayment'].toString() +
-                                    " ₹",
-                                style: TextStyle(color: Colors.grey[500])))
+                                "₹ ${dataFinal[0]['InitialPayment'].toString()}",
+                                style: TextStyle(color: Colors.orange[700])))
                       ],
                     ),
                     Divider(
@@ -113,8 +122,8 @@ class _PaymentHistoryState extends State<PaymentHistory> {
                         Expanded(
                             flex: 1,
                             child: Text(
-                                dataFinal[0]['TotalEMI'].toString() + " ₹",
-                                style: TextStyle(color: Colors.grey[500])))
+                                "₹ ${dataFinal[0]['TotalEMI'].toString()}",
+                                style: TextStyle(color: Colors.orange[700])))
                       ],
                     ),
                     Divider(
@@ -131,8 +140,8 @@ class _PaymentHistoryState extends State<PaymentHistory> {
                         Expanded(
                             flex: 1,
                             child: Text(
-                                dataFinal[0]['TotalPay'].toString() + " ₹",
-                                style: TextStyle(color: Colors.grey[500])))
+                                "₹ ${dataFinal[0]['TotalPay'].toString()}",
+                                style: TextStyle(color: Colors.orange[700])))
                       ],
                     ),
                     Divider(
@@ -149,8 +158,8 @@ class _PaymentHistoryState extends State<PaymentHistory> {
                         Expanded(
                             flex: 1,
                             child: Text(
-                              dataFinal[0]['Balance'].toString() + " ₹",
-                              style: TextStyle(color: Colors.grey[500]),
+                              "₹ ${dataFinal[0]['Balance'].toString()}",
+                              style: TextStyle(color: Colors.orange[700]),
                             ))
                       ],
                     ),

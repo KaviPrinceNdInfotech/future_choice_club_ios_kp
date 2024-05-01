@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:future_choice_test_flutter/utils/datasource.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,14 +15,42 @@ class EmiDetails extends StatefulWidget {
 }
 
 class _EmiDetailsState extends State<EmiDetails> {
+  List listProfileData;
   final _razorPay = Razorpay();
   int userId;
   bool isLoading = true;
   List dataFinal;
   int emiId;
+  void getProfileData() async {
+    var endPointUrl = "https://fcclub.co.in/api/Myprofileapi/MyProfileGet";
+    //print(userId.toString());
+    Map<String, String> queryParamete = {
+      'id': userId.toString(),
+    };
+    String queryString = Uri(queryParameters: queryParamete).query;
+    var requestUrl = endPointUrl + '?' + queryString;
+    // var uri =
+    // Uri.https('https://www.futurechoiceclub.com', '/api/Myprofileapi/MyProfileGet', queryParameters);
+    http.Response response = await http.get(requestUrl);
+    print("okurl ${requestUrl}");
+    //print(requestUrl);
+    //print('https://www.futurechoiceclub.com/api/Myprofileapi/MyProfileGet?id=$userId');
+    //print(response.body);
+    if (response.statusCode == 200) {
+      setState(() {
+        listProfileData = json.decode(response.body);
+      });
+    } else {
+      // Fluttertoast.showToast(
+      //     msg: "",
+      //     toastLength: Toast.LENGTH_SHORT,
+      //     gravity: ToastGravity.BOTTOM,
+      //     timeInSecForIosWeb: 1);
+    }
+  }
 
   void updateEmiData() async {
-    var endpointUrl = "https://fcclub.co.in/api/api/UserEmi/EmiPay";
+    var endpointUrl = "https://fcclub.co.in/api/UserEmi/EmiPay";
     Map<String, String> queryParameter = {"Id": emiId.toString()};
     String queryString = Uri(queryParameters: queryParameter).query;
     var requestUrl = endpointUrl + "?" + queryString;
@@ -59,7 +88,10 @@ class _EmiDetailsState extends State<EmiDetails> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return Scaffold(
+      backgroundColor: Colors.blue.shade700,
       appBar: AppBar(
         backgroundColor: primaryColor,
         iconTheme: IconThemeData(color: Colors.white),
@@ -69,111 +101,153 @@ class _EmiDetailsState extends State<EmiDetails> {
         ),
       ),
       body: dataFinal == null
-          ? Center(
-              child: CircularProgressIndicator(),
+          ? FutureBuilder(
+              future: Future.delayed(Duration(seconds: 2)),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else {
+                  return Center(
+                    child: Text('Data Not Found'),
+                  );
+                }
+              },
             )
-          : Container(
-              width: double.infinity,
-              child: Column(
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(left: 5, top: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Expanded(
-                            flex: 1,
-                            child: Text(
-                              'Amount',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 15),
-                            )),
-                        Expanded(
-                            flex: 1,
-                            child: Text('Due Date',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15))),
-                        Expanded(
-                            flex: 1,
-                            child: Text('Status',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15))),
-                        Expanded(flex: 1, child: Text(''))
-                      ],
-                    ),
-                  ),
-                  ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: dataFinal.length,
-                      itemBuilder: (context, index) {
-                        return (Card(
-                          child: Container(
-                            height: 80,
-                            width: double.infinity,
-                            margin: EdgeInsets.all(5),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Expanded(
-                                    child: Text(
-                                  dataFinal[index]['InstallmentAmount']
-                                          .toString() +
-                                      " ₹",
-                                  style: TextStyle(fontSize: 12),
-                                )),
-                                Expanded(
-                                  child: Text(
-                                      dataFinal[index]['InstallmentDate']
-                                          .toString(),
-                                      style: TextStyle(fontSize: 12)),
-                                ),
-                                Expanded(
-                                  child: dataFinal[index]['IsPaid']
-                                      ? Text(
-                                          'Paid',
-                                          style: TextStyle(fontSize: 12),
-                                        )
-                                      : Text('Pending',
-                                          style: TextStyle(fontSize: 12)),
-                                ),
-                                Expanded(
-                                    child: Visibility(
-                                  visible: !dataFinal[index]['IsPaid'],
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        emiId = dataFinal[index]['Id'];
-                                      });
-                                      startPayment(double.parse(
-                                          (dataFinal[index]
-                                                  ['InstallmentAmount'])
-                                              .toString()));
-                                    },
-                                    child: Container(
-                                        padding: EdgeInsets.all(5),
-                                        decoration: BoxDecoration(
-                                            color: primaryColor,
-                                            borderRadius:
-                                                BorderRadius.circular(5)),
-                                        child: Text(
-                                          'Pay Now',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              fontSize: 13,
-                                              color: Colors.white),
-                                        )),
-                                  ),
-                                )),
-                              ],
-                            ),
+          : dataFinal.isEmpty
+              ? Center(
+                  child: Text('No data available'),
+                )
+              : Container(
+                  width: double.infinity,
+                  // height: 70,
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 40,
+                        margin: EdgeInsets.only(left: 5, top: 5, right: 5),
+                        color: Colors.grey.shade200,
+                        child: Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Expanded(
+                                  flex: 1,
+                                  child: Column(
+                                    children: [
+                                      Spacer(),
+                                      Text(
+                                        'Amount',
+                                        style: GoogleFonts.aBeeZee(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15,
+                                            color: Colors.redAccent),
+                                      ),
+                                      Text(
+                                        "(Including GST)",
+                                        style: TextStyle(
+                                          fontSize: 7,
+                                        ),
+                                      ),
+                                    ],
+                                  )),
+                              Expanded(
+                                  flex: 1,
+                                  child: Text('Due Date',
+                                      style: GoogleFonts.aBeeZee(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.indigo.shade900,
+                                          fontSize: 15))),
+                              Expanded(
+                                  flex: 1,
+                                  child: Text('Status',
+                                      style: GoogleFonts.aBeeZee(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15,
+                                        color: Colors.orange.shade900,
+                                      ))),
+                              Expanded(flex: 1, child: Text(''))
+                            ],
                           ),
-                        ));
-                      })
-                ],
-              ),
-            ),
+                        ),
+                      ),
+                      ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: dataFinal.length,
+                          itemBuilder: (context, index) {
+                            return (Card(
+                              child: Container(
+                                height: 70,
+                                width: double.infinity,
+                                margin: EdgeInsets.all(5),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Expanded(
+                                        child: Text(
+                                      "    ₹ ${dataFinal[index]['InstallmentAmount'].toString()}",
+                                      //  +
+                                      // " ₹",
+                                      style: TextStyle(fontSize: 12),
+                                    )),
+                                    Expanded(
+                                      child: Text(
+                                          dataFinal[index]['InstallmentDate']
+                                              .toString(),
+                                          style: TextStyle(fontSize: 12)),
+                                    ),
+                                    Expanded(
+                                      child: dataFinal[index]['IsPaid']
+                                          ? Text(
+                                              'Paid',
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: Colors.green),
+                                            )
+                                          : Text('Pending',
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: Colors.red)),
+                                    ),
+                                    Expanded(
+                                        child: Visibility(
+                                      visible: !dataFinal[index]['IsPaid'],
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            emiId = dataFinal[index]['Id'];
+                                          });
+                                          startPayment(double.parse(
+                                              (dataFinal[index]
+                                                      ['InstallmentAmount'])
+                                                  .toString()));
+                                        },
+                                        child: Container(
+                                            padding: EdgeInsets.all(5),
+                                            decoration: BoxDecoration(
+                                                color: Colors.green,
+                                                borderRadius:
+                                                    BorderRadius.circular(5)),
+                                            child: Text(
+                                              'Pay Now',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  fontSize: 13,
+                                                  color: Colors.white),
+                                            )),
+                                      ),
+                                    )),
+                                  ],
+                                ),
+                              ),
+                            ));
+                          })
+                    ],
+                  ),
+                ),
     );
   }
 
@@ -184,6 +258,7 @@ class _EmiDetailsState extends State<EmiDetails> {
     });
 
     getEmiDetails();
+    getProfileData();
   }
 
   void showToast(String message) {
@@ -199,6 +274,8 @@ class _EmiDetailsState extends State<EmiDetails> {
     // TODO: implement initState
     super.initState();
     getUserId();
+    getProfileData();
+
     _razorPay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     _razorPay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
     _razorPay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
@@ -227,9 +304,13 @@ class _EmiDetailsState extends State<EmiDetails> {
     var options = {
       'key': 'rzp_live_eiaOxQ8zHwxdX4',
       'amount': (amount * 100).toInt(),
-      'name': 'Future Choice CLub',
+      'name': listProfileData[0]['Name'],
+      //'Future Choice CLub',
       'description': 'Payment to FutureChoiceCLub',
-      'prefill': {'contact': '', 'email': ''}
+      'prefill': {
+        'contact': listProfileData[0]['Mobile'],
+        'email': listProfileData[0]['EMail'],
+      }
     };
 
     try {
