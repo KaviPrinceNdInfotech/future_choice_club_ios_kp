@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:future_choice_test_flutter/models/Resorts.dart';
 import 'package:future_choice_test_flutter/screens/hotel_details.dart';
 import 'package:future_choice_test_flutter/utils/datasource.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 
 class AvailableResorts extends StatefulWidget {
@@ -28,7 +29,10 @@ class _AvailableResortsState extends State<AvailableResorts> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return Scaffold(
+        backgroundColor: Colors.blue.shade500,
         appBar: AppBar(
           backgroundColor: primaryColor,
           iconTheme: IconThemeData(color: Colors.white),
@@ -48,11 +52,24 @@ class _AvailableResortsState extends State<AvailableResorts> {
                   Resorts resort = resorts[index];
 
                   return Container(
-                    margin: EdgeInsets.all(5),
+                    margin: EdgeInsets.all(0),
                     child: Card(
                       child: ListTile(
-                        title: Text(resort.desinationName),
-                        subtitle: Text(resort.placeName),
+                        trailing: Icon(Icons.arrow_circle_right),
+                        title: Text(
+                          resort.desinationName,
+                          style: GoogleFonts.aBeeZee(
+                              fontSize: size.width * 0.043,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.orange.shade800),
+                        ),
+                        subtitle: Text(
+                          resort.placeName,
+                          style: GoogleFonts.aBeeZee(
+                              fontSize: size.width * 0.033,
+                              //fontWeight: FontWeight.bold,
+                              color: Colors.green.shade800),
+                        ),
                         onTap: () {
                           /* Navigator.push(
                               context,
@@ -70,8 +87,8 @@ class _AvailableResortsState extends State<AvailableResorts> {
 }
 
 Future<List<Resorts>> getResorts() async {
-  final url =
-      "https://fcclub.co.in/api/AssociateResort/GetAssociateResort?id=77";
+  final url = "https://fcclub.co.in/api/AssociateResort/GetAssociateResort";
+  //"https://fcclub.co.in/api/AssociateResort/GetAssociateResort?id=77";
   final response = await http.get(url);
   if (response.statusCode == 200) {
     final List<Resorts> resorts = resortsFromJson(response.body);

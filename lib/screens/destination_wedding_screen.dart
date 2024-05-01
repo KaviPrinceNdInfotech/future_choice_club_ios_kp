@@ -38,7 +38,9 @@ class _DestinationWeddingState extends State<DestinationWedding> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
+          backgroundColor: primaryColor,
           title: Text(
             'Destination Wedding',
             style: TextStyle(color: Colors.white, fontSize: 16),

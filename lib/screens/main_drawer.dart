@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:future_choice_test_flutter/utils/datasource.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MainDrawer extends StatefulWidget {
@@ -23,25 +24,38 @@ class _MainDrawerState extends State<MainDrawer> {
         child: Column(
           children: [
             Container(
-              height: 160,
+              height: 183,
               width: double.infinity,
               color: primaryColor,
               child: Center(
                 child: Column(
                   children: [
                     GestureDetector(
-                      onTap: () {
-                        Navigator.popAndPushNamed(context, '/profile');
+                      onTap: () async {
+                        //CallLoader.loader();
+                        await Future.delayed(Duration(seconds: 2));
+                        await Navigator.popAndPushNamed(context, '/profile');
                       },
                       child: Container(
                         width: 100,
                         height: 100,
-                        margin: EdgeInsets.only(top: 10, bottom: 10),
-                        child: Image.asset('images/images.jpg'),
+                        margin: EdgeInsets.only(top: 50, bottom: 10),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                                image: AssetImage("images/logoheader.jpeg"),
+                                fit: BoxFit.fill)),
+                        // child: Image.asset('images/logoheader.jpeg'
+                        //     //'images/images.jpg'
+                        //     ),
                       ),
                     ),
                     Text(userName,
-                        style: TextStyle(color: Colors.white, fontSize: 13))
+                        style: GoogleFonts.roboto(
+                            color: Colors.blue.shade900,
+                            letterSpacing: 1,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14))
                   ],
                 ),
               ),
@@ -221,9 +235,10 @@ class _MainDrawerState extends State<MainDrawer> {
                         ),
                         TextButton(
                           child: Text('Yes'),
-                          onPressed: () {
+                          onPressed: () async {
                             logOutUser(context);
-                            Navigator.of(dialogContext).pop();
+
+                            /// Navigator.of(dialogContext).pop();
                           },
                         )
                       ],

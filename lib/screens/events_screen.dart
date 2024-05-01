@@ -12,6 +12,7 @@ class EventsScreen extends StatefulWidget {
 class _EventsScreenState extends State<EventsScreen> {
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     final Uri _url = Uri.parse('https://1m6m.app.link/j7j8oLQD6Cb/');
     Future<void> _launchUrl() async {
       if (!await launchUrl(_url)) {
@@ -20,11 +21,13 @@ class _EventsScreenState extends State<EventsScreen> {
     }
 
     return Scaffold(
+      backgroundColor: Colors.blueAccent.shade700,
       appBar: AppBar(
+        elevation: 2,
         backgroundColor: primaryColor,
         title: Text(
           'Events',
-          style: TextStyle(color: Colors.white, fontSize: 16),
+          style: TextStyle(color: Colors.white, fontSize: size.height * 0.03),
         ),
         iconTheme: IconThemeData(color: Colors.white),
       ),
@@ -35,9 +38,12 @@ class _EventsScreenState extends State<EventsScreen> {
                 onTap: () {
                   Navigator.pushNamed(context, '/preWedding');
                 },
-                child: Image.asset(
-                  'images/pre_wedding.png',
-                  height: 130,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Image.asset(
+                    'images/pre_wedding.png',
+                    height: 130,
+                  ),
                 )),
             GestureDetector(
                 onTap: () {

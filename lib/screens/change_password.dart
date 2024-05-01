@@ -56,6 +56,7 @@ class _ChangePasswordState extends State<ChangePassword> {
     return Scaffold(
       key: _scaffoldkey,
       appBar: AppBar(
+        backgroundColor: primaryColor,
         title: Text(
           'Change Password',
           style: TextStyle(color: Colors.white, fontSize: 16),

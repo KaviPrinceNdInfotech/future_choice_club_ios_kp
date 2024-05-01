@@ -32,6 +32,7 @@ class _PreWeddingScreenState extends State<PreWeddingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: primaryColor,
           title: Text(
             'Pre Wedding',
             style: TextStyle(color: Colors.white, fontSize: 16),
@@ -51,6 +52,8 @@ class _PreWeddingScreenState extends State<PreWeddingScreen> {
                     alignment: Alignment.center,
                     width: double.infinity,
                     height: 400,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.white, width: 1)),
                     child: Image.network(
                       IMAGE_BASE_URL + _listImages[index]['ImageDest'],
                       width: double.infinity,

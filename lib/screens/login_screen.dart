@@ -137,6 +137,7 @@ class _LoginPageState extends State<LoginPage> {
                               color: Theme.of(context).primaryColor,
                             ),
                             onPressed: () {
+                              ////
                               // Update the state i.e. toogle the state of passwordVisible variable
                               setState(() {
                                 _passwordVisible = !_passwordVisible;
